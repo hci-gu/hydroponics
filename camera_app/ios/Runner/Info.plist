@@ -14,7 +14,7 @@
 	<string>camera_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSCameraLibraryUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
 	<string></string>
 	<key>NSPhotoAddLibraryUsageDescription</key>
 	<string></string>
