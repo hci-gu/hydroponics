@@ -21,7 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-
+  gallery_saver: ^2.0.1
+  image_gallery_saver: '^1.6.3'
   camera: ^0.5.8+11
   path_provider:
   path:
