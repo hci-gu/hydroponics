@@ -1,6 +1,8 @@
 import 'dart:async';
-// import 'dart:html';
-// import 'dart:typed_data';
+//import 'dart:html';
+import 'dart:typed_data';
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -62,8 +64,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
         await _controller.takePicture(path);
         GallerySaver.saveImage(path);
-        // Uint8List bytes = File(path).readAsBytesSync();
-
+        Uint8List bytes = File(path).readAsBytesSync();
+        // await rootBundle.load(path).buffer.asUint8List();
+        // ByteData bytes = await rootBundle.load(path);
+        // print(bytes);
       } catch (e) {
         print(e);
       }
