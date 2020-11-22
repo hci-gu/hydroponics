@@ -26,6 +26,7 @@ dependencies:
   camera: ^0.5.8+11
   path_provider:
   path:
+  lamp: ^0.0.6
 
 
   flutter:

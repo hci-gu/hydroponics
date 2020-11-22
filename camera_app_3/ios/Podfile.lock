@@ -6,6 +6,8 @@ PODS:
     - Flutter
   - image_gallery_saver (1.5.0):
     - Flutter
+  - lamp (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
 
@@ -14,6 +16,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - gallery_saver (from `.symlinks/plugins/gallery_saver/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
+  - lamp (from `.symlinks/plugins/lamp/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
 
 EXTERNAL SOURCES:
@@ -25,6 +28,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/gallery_saver/ios"
   image_gallery_saver:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
+  lamp:
+    :path: ".symlinks/plugins/lamp/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
 
@@ -33,6 +38,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   gallery_saver: 9fc173c9f4fcc48af53b2a9ebea1b643255be542
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
+  lamp: d36cd3552d535c77ab49112704c0c9386b9268bb
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c

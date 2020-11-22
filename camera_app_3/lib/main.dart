@@ -1,10 +1,13 @@
 import 'dart:async';
+// import 'dart:html';
+// import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:lamp/lamp.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,14 +52,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
     _initializeControllerFuture = _controller.initialize();
 
-    Timer.periodic(Duration(hours: 8), (timer) async {
+    Timer.periodic(Duration(seconds: 8), (timer) async {
       try {
+        await Lamp.flash(new Duration(seconds: 2));
         final path = join(
           (await getTemporaryDirectory()).path,
           '${DateTime.now()}.png',
         );
+
         await _controller.takePicture(path);
         GallerySaver.saveImage(path);
+        // Uint8List bytes = File(path).readAsBytesSync();
+
       } catch (e) {
         print(e);
       }
@@ -76,12 +83,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
       // Kan vara användbar när vi installerar kameran.
 
-      // body: FutureBuilder<void>(
-      //   future: _initializeControllerFuture,
-      //   builder: (context, snapshot) {
-      //       return CameraPreview(_controller);
-      //   },
-      // ),
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          return CameraPreview(_controller);
+        },
+      ),
     );
   }
 }
