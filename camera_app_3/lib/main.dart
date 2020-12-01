@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'dart:html';
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
@@ -57,6 +54,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     _initializeControllerFuture = _controller.initialize();
 
     Timer.periodic(Duration(seconds: 10), (timer) async {
+      // await Lamp.flash(new Duration(seconds: 2));
+
       try {
         final path = join(
           (await getTemporaryDirectory()).path,
@@ -66,15 +65,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         await _controller.takePicture(path);
         GallerySaver.saveImage(path);
         Uint8List bytes = File(path).readAsBytesSync();
-        print(bytes);
         await uploadImage(bytes);
-
-        // await rootBundle.load(path).buffer.asUint8List();
-        // ByteData bytes = await rootBundle.load(path);
-        // print(bytes);
-      } catch (e) {
-        print(e);
-      }
+      } catch (e) {}
     });
   }
 
@@ -101,8 +93,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   Future uploadImage(Uint8List imageBytes) async {
-    var url = 'http://localhost:3000/image';
-    var response = await http.post(
+    var url = 'http://192.168.0.4:3000/image';
+    await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -111,6 +103,5 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         'data': base64Encode(imageBytes),
       }),
     );
-    print(response);
   }
 }
