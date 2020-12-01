@@ -40,10 +40,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void initState() {
     super.initState();
-
-    Timer.periodic(Duration(seconds: 10), (timer) async {
-      await cameraController.captureImage();
-    });
   }
 
   @override
@@ -53,26 +49,40 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdvCamera(
-      onCameraCreated: _onCameraCreated,
-      flashType: FlashType.on,
-      bestPictureSize: true,
-      onImageCaptured: (String path) async {
-        print("onImageCaptured => " + path);
-        await GallerySaver.saveImage(path);
-        Uint8List bytes = File(path).readAsBytesSync();
-        await uploadImage(bytes);
-      },
-      cameraPreviewRatio: CameraPreviewRatio.r16_9,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Kamera'),
+      ),
+      body: AdvCamera(
+        onCameraCreated: _onCameraCreated,
+        flashType: FlashType.on,
+        bestPictureSize: true,
+        onImageCaptured: (String path) async {
+          print("onImageCaptured => " + path);
+          await GallerySaver.saveImage(path);
+          Uint8List bytes = File(path).readAsBytesSync();
+          try {
+            await uploadImage(bytes);
+          } catch (e) {}
+          takeImage();
+        },
+        cameraPreviewRatio: CameraPreviewRatio.r16_9,
+      ),
     );
   }
 
-  _onCameraCreated(AdvCameraController controller) {
+  _onCameraCreated(AdvCameraController controller) async {
     this.cameraController = controller;
+    takeImage();
+  }
+
+  void takeImage() async {
+    await Future.delayed(Duration(minutes: 15));
+    cameraController.captureImage();
   }
 
   Future uploadImage(Uint8List imageBytes) async {
-    var url = 'http://192.168.0.4:3000/image';
+    var url = 'https://hydroponics-api-bhtyw.ondigitalocean.app/image';
     await http.post(
       url,
       headers: <String, String>{
