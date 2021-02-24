@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -12,14 +13,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
-
-  runApp(
-    MaterialApp(
-      home: TakePictureScreen(
-        camera: firstCamera,
-      ),
-    ),
-  );
+  runApp(MaterialApp(
+    home: TakePictureScreen(),
+  ));
 }
 
 class TakePictureScreen extends StatefulWidget {
@@ -47,28 +43,40 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     super.dispose();
   }
 
+  var cameraBody = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Kamera'),
-      ),
-      body: AdvCamera(
+    if (cameraBody == false) {
+      return Scaffold(
+          body: AdvCamera(
         onCameraCreated: _onCameraCreated,
         flashType: FlashType.on,
+        cameraSessionPreset: CameraSessionPreset.high,
         bestPictureSize: true,
         onImageCaptured: (String path) async {
           print("onImageCaptured => " + path);
           await GallerySaver.saveImage(path);
           Uint8List bytes = File(path).readAsBytesSync();
           try {
+            print("Trying to upload image");
             await uploadImage(bytes);
-          } catch (e) {}
+            print("Done uploading image");
+          } catch (e) {
+            print(e);
+          }
           takeImage();
+          timer();
+          setState(() {
+            cameraBody = true;
+          });
         },
         cameraPreviewRatio: CameraPreviewRatio.r16_9,
-      ),
-    );
+      ));
+    } else {
+      return Scaffold(
+        backgroundColor: Colors.black,
+      );
+    }
   }
 
   _onCameraCreated(AdvCameraController controller) async {
@@ -77,8 +85,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   void takeImage() async {
-    await Future.delayed(Duration(minutes: 15));
+    await Future.delayed(Duration(seconds: 20));
     cameraController.captureImage();
+  }
+
+  void timer() async {
+    await Future.delayed(Duration(minutes: 20));
+    setState(() {
+      cameraBody = false;
+    });
   }
 
   Future uploadImage(Uint8List imageBytes) async {
