@@ -55,7 +55,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         bestPictureSize: true,
         onImageCaptured: (String path) async {
           print("onImageCaptured => " + path);
-          await GallerySaver.saveImage(path);
+          // await GallerySaver.saveImage(path);
           Uint8List bytes = File(path).readAsBytesSync();
           try {
             print("Trying to upload image");
